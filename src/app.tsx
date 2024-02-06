@@ -1,4 +1,5 @@
 import logo from "./assets/logo.svg";
+import { NoteCard } from "./components/note-card";
 
 export function App() {
   return (
@@ -13,6 +14,14 @@ export function App() {
         />
       </form>
       <div className="bg-slate-700 h-px" />
+
+      <div className="grid grid-cols-3 gap-6 auto-rows-[250px]">
+        <NoteCard />
+        <NoteCard />
+        <NoteCard />
+        <NoteCard />
+        <NoteCard />
+      </div>
     </div>
   );
 }
