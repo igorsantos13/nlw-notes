@@ -1,5 +1,6 @@
 import logo from "./assets/logo.svg";
 import { NoteCard } from "./components/note-card";
+import { NewNoteCard } from "./components/new-note-card";
 
 export function App() {
   return (
@@ -16,11 +17,11 @@ export function App() {
       <div className="bg-slate-700 h-px" />
 
       <div className="grid grid-cols-3 gap-6 auto-rows-[250px]">
-        <NoteCard />
-        <NoteCard />
-        <NoteCard />
-        <NoteCard />
-        <NoteCard />
+        <NewNoteCard />
+        <NoteCard note={{ date: new Date(), content: "teste" }} />
+        <NoteCard note={{ date: new Date(), content: "xdd" }} />
+        <NoteCard note={{ date: new Date(), content: "teste" }} />
+        <NoteCard note={{ date: new Date(), content: "teste" }} />
       </div>
     </div>
   );

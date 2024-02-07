@@ -1,19 +1,35 @@
-export const NoteCard = () => {
+import * as Dialog from "@radix-ui/react-dialog";
+import { NoteDataInfo } from "./note-data-info";
+
+interface NoteCardProps {
+  note: {
+    date: Date;
+    content: string;
+  };
+}
+export const NoteCard = ({ note }: NoteCardProps) => {
   return (
-    <button className="rounded-md text-left bg-slate-800 p-5 space-y-3 overflow-hidden relative hover:ring-2 hover:ring-slate-600 focus-visible:ring-2 focus-visible:ring-lime-400 outline-none">
-      <span className="text-sm font-medium text-slate-300">há 2 dias</span>
+    <Dialog.Root>
+      <Dialog.Trigger className="rounded-md text-left flex flex-col bg-slate-800 p-5 gap-3 overflow-hidden relative hover:ring-2 hover:ring-slate-600 focus-visible:ring-2 focus-visible:ring-lime-400 outline-none">
+        <NoteDataInfo note={note} />
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-black/0 h-1/2 pointer-events-none"></div>
+      </Dialog.Trigger>
 
-      <p className="text-sm leading-6 text-slate-400">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste eum,
-        fugit, hic facere deleniti esse libero soluta aperiam atque ducimus
-        dignissimos! Architecto, iure nesciunt? Porro laudantium nulla iusto
-        mollitia obcaecati.Lorem ipsum dolor sit amet consectetur adipisicing
-        elit. Iste eum, fugit, hic facere deleniti esse libero soluta aperiam
-        atque ducimus dignissimos! Architecto, iure nesciunt? Porro laudantium
-        nulla iusto mollitia obcaecati.
-      </p>
-
-      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-black/0 h-1/2 pointer-events-none"></div>
-    </button>
+      <Dialog.Portal>
+        <Dialog.Overlay className="inset-0 fixed bg-black/60" />
+        <Dialog.Content className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 max-w-[640px] w-full h-[60vh] bg-slate-700 rounded-md overflow-hidden flex flex-col outline-none">
+          <div className="flex flex-1 flex-col gap-3 p-5">
+            <NoteDataInfo note={note} />
+          </div>
+          <button className="w-full bg-slate-800 text-sm text-center py-4 font-medium group">
+            Deseja{" "}
+            <span className="text-red-400 hover:underline group-hover:underline">
+              apagar essa nota
+            </span>
+            ?
+          </button>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
   );
 };
