@@ -1,5 +1,6 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { NoteDataInfo } from "./note-data-info";
+import { X } from "lucide-react";
 
 interface NoteCardProps {
   note: {
@@ -18,6 +19,11 @@ export const NoteCard = ({ note }: NoteCardProps) => {
       <Dialog.Portal>
         <Dialog.Overlay className="inset-0 fixed bg-black/60" />
         <Dialog.Content className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 max-w-[640px] w-full h-[60vh] bg-slate-700 rounded-md overflow-hidden flex flex-col outline-none">
+          <div className="flex w-full justify-end">
+            <Dialog.Close className="h-8 w-8 bg-slate-800 flex items-center justify-center text-slate-500 hover:text-slate-100">
+              <X className="size-5 " />
+            </Dialog.Close>
+          </div>
           <div className="flex flex-1 flex-col gap-3 p-5">
             <NoteDataInfo note={note} />
           </div>
