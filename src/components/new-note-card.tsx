@@ -3,9 +3,14 @@ import { X } from "lucide-react";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { toast } from "sonner";
 
-export function NewNoteCard() {
+interface NewNoteCardProps {
+  onSaveNote: (content: string) => void;
+}
+
+export function NewNoteCard({ onSaveNote }: NewNoteCardProps) {
   const [chooseText, setChooseText] = useState(false);
   const [contentFromTextArea, setContentFromTextArea] = useState("");
+  const [isRecording, setIsRecording] = useState(false);
 
   const handleTextAreaChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setContentFromTextArea(event.target.value);
@@ -14,10 +19,25 @@ export function NewNoteCard() {
 
   const handleSaveNote = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(contentFromTextArea);
+
+    //salva a nota como estado
+    if (contentFromTextArea == "") {
+      toast.error("Não é permitido notas vazias");
+      return;
+    }
+    onSaveNote(contentFromTextArea);
+    setContentFromTextArea("");
+    setChooseText(false);
 
     toast.success("Nota salva com sucesso!");
-    //salvar a nota seilaonde
+  };
+
+  const handleStartRecording = () => {
+    setIsRecording(true);
+  };
+
+  const handleStopRecording = () => {
+    setIsRecording(false);
   };
   return (
     <Dialog.Root>
@@ -54,15 +74,21 @@ export function NewNoteCard() {
                   autoFocus
                   className="text-sm leading-6 text-slate-400 bg-transparent resize-none flex-1 outline-none"
                   onChange={handleTextAreaChange}
+                  value={contentFromTextArea}
                 ></textarea>
               ) : (
                 <p className="text-sm leading-6 text-slate-400">
                   Comece{" "}
-                  <button className="text-lime-400 font-medium bg-white/5 hover:underline">
+                  <button
+                    type="button"
+                    onClick={handleStartRecording}
+                    className="text-lime-400 font-medium bg-white/5 hover:underline"
+                  >
                     gravando uma nota
                   </button>{" "}
                   em áudio ou se preferir{" "}
                   <button
+                    type="button"
                     className="text-lime-400 font-medium bg-white/5 hover:underline"
                     onClick={() => setChooseText(true)}
                   >
@@ -72,9 +98,19 @@ export function NewNoteCard() {
                 </p>
               )}
             </div>
-            <button className="w-full bg-lime-400 text-sm text-lime-950 text-center py-4 font-medium  transition transform hover:bg-lime-500 delay-150">
-              Salvar nota
-            </button>
+            {isRecording ? (
+              <button
+                type="button"
+                onClick={handleStopRecording}
+                className="w-full bg-slate-800 text-sm text-slate-300 text-center py-4 font-medium  transition transform hover:text-slate-100 delay-150"
+              >
+                Gravando! (clique p/ interromper)
+              </button>
+            ) : (
+              <button className="w-full bg-lime-400 text-sm text-lime-950 text-center py-4 font-medium  transition transform hover:bg-lime-500 delay-150">
+                Salvar nota
+              </button>
+            )}
           </form>
         </Dialog.Content>
       </Dialog.Portal>

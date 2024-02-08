@@ -2,6 +2,9 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { NoteDataInfo } from "./note-data-info";
 import { X } from "lucide-react";
 
+import { formatDistanceToNow } from "date-fns";
+import { ptBR } from "date-fns/locale";
+
 interface NoteCardProps {
   note: {
     date: Date;
@@ -25,7 +28,14 @@ export const NoteCard = ({ note }: NoteCardProps) => {
             </Dialog.Close>
           </div>
           <div className="flex flex-1 flex-col gap-3 p-5">
-            <NoteDataInfo note={note} />
+            <span className="text-sm font-medium text-slate-300">
+              {formatDistanceToNow(note.date, {
+                locale: ptBR,
+                addSuffix: true,
+              })}
+            </span>
+
+            <p className="text-sm leading-6 text-slate-400">{note.content}</p>
           </div>
           <button className="w-full bg-slate-800 text-sm text-center py-4 font-medium group">
             Deseja{" "}
