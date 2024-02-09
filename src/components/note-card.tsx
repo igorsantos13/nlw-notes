@@ -7,11 +7,13 @@ import { ptBR } from "date-fns/locale";
 
 interface NoteCardProps {
   note: {
+    id: string;
     date: Date;
     content: string;
   };
+  onDeleteNote: (id: string) => void;
 }
-export const NoteCard = ({ note }: NoteCardProps) => {
+export const NoteCard = ({ note, onDeleteNote }: NoteCardProps) => {
   return (
     <Dialog.Root>
       <Dialog.Trigger className="rounded-md text-left flex flex-col bg-slate-800 p-5 gap-3 overflow-hidden relative hover:ring-2 hover:ring-slate-600 focus-visible:ring-2 focus-visible:ring-lime-400 outline-none">
@@ -37,7 +39,10 @@ export const NoteCard = ({ note }: NoteCardProps) => {
 
             <p className="text-sm leading-6 text-slate-400">{note.content}</p>
           </div>
-          <button className="w-full bg-slate-800 text-sm text-center py-4 font-medium group">
+          <button
+            onClick={() => onDeleteNote(note.id)}
+            className="w-full bg-slate-800 text-sm text-center py-4 font-medium group"
+          >
             Deseja{" "}
             <span className="text-red-400 hover:underline group-hover:underline">
               apagar essa nota
