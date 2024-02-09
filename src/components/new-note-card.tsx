@@ -7,6 +7,8 @@ interface NewNoteCardProps {
   onSaveNote: (content: string) => void;
 }
 
+let speechRecognition: SpeechRecognition | null = null;
+
 export function NewNoteCard({ onSaveNote }: NewNoteCardProps) {
   const [chooseText, setChooseText] = useState(false);
   const [contentFromTextArea, setContentFromTextArea] = useState("");
@@ -31,11 +33,49 @@ export function NewNoteCard({ onSaveNote }: NewNoteCardProps) {
   };
 
   const handleStartRecording = () => {
+    const isSpeechRecognitionApiAvailable =
+      "SpeechRecognition" in window || "webkitSpeechRecognition" in window;
+
+    if (!isSpeechRecognitionApiAvailable) {
+      alert(
+        "Infelizmente seu navegador não suporta a funcionalidade de gravação"
+      );
+      return;
+    }
+
+    setChooseText(true);
     setIsRecording(true);
+
+    const SpeechRecognitionAPI =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    speechRecognition = new SpeechRecognitionAPI();
+
+    speechRecognition.lang = "pt-BR";
+    speechRecognition.continuous = true;
+    speechRecognition.maxAlternatives = 1;
+    speechRecognition.interimResults = true;
+
+    speechRecognition.onresult = (event) => {
+      const transcription = Array.from(event.results).reduce((text, result) => {
+        return text.concat(result[0].transcript);
+      }, "");
+
+      setContentFromTextArea(transcription);
+    };
+
+    speechRecognition.onerror = (err) => {
+      console.error(err);
+    };
+
+    speechRecognition.start();
   };
 
   const handleStopRecording = () => {
     setIsRecording(false);
+    if (speechRecognition !== null) {
+      speechRecognition.stop();
+    }
   };
   return (
     <Dialog.Root>
