@@ -17,9 +17,7 @@ export function NewNoteCard({ onSaveNote }: NewNoteCardProps) {
     if (event.target.value === "") setChooseText(false);
   };
 
-  const handleSaveNote = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
+  const handleSaveNote = () => {
     //salva a nota como estado
     if (contentFromTextArea == "") {
       toast.error("Não é permitido notas vazias");
@@ -63,7 +61,7 @@ export function NewNoteCard({ onSaveNote }: NewNoteCardProps) {
               <X className="size-5 " />
             </Dialog.Close>
           </div>
-          <form className="flex-1 flex flex-col" onSubmit={handleSaveNote}>
+          <form className="flex-1 flex flex-col">
             <div className="flex flex-1 flex-col gap-3 p-5">
               <span className="text-sm font-medium text-slate-300">
                 Adicionar nota
@@ -102,12 +100,17 @@ export function NewNoteCard({ onSaveNote }: NewNoteCardProps) {
               <button
                 type="button"
                 onClick={handleStopRecording}
-                className="w-full bg-slate-800 text-sm text-slate-300 text-center py-4 font-medium  transition transform hover:text-slate-100 delay-150"
+                className="flex flex-row items-center gap-2 justify-center w-full bg-slate-800 text-sm text-slate-300 text-center py-4 font-medium  transition transform hover:text-slate-100 delay-150"
               >
+                <div className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse" />
                 Gravando! (clique p/ interromper)
               </button>
             ) : (
-              <button className="w-full bg-lime-400 text-sm text-lime-950 text-center py-4 font-medium  transition transform hover:bg-lime-500 delay-150">
+              <button
+                type="button"
+                onClick={handleSaveNote}
+                className="w-full bg-lime-400 text-sm text-lime-950 text-center py-4 font-medium  transition transform hover:bg-lime-500 delay-150"
+              >
                 Salvar nota
               </button>
             )}
